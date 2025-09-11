@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Notes - Google Docs</title>
+</head>
+<body>
+<textarea name="Messages" id="chat-room-messages" cols="30" rows="10"> </textarea>
+<form>
+	<label for="<Messagee>">Message:</label><br>
+	<input type="text" id="chat-message-input" name="Message"><br>
+	<input type="submit" value="Submit" id="chat-message-submit">
+</form>
+</body>
+</html>
+
+<script>
+    window.onload=function() {
+        var my_text=prompt('Enter username (bobby will code nicer ui and account creation later, right now no authentication');
+        if(my_text) alert(my_text);
+
+    }
+    const roomName = "default"
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+    );
+    const input = document.getElementById('chat-message-input');
+    const submit = document.getElementById('chat-message-submit');
+
+    function sendMessage() {
+        let message = input.value;
+        chatSocket.send(JSON.stringify({
+	        'message': message
+        }));
+        input.value = "";
+    }
+
+
+
+    submit.addEventListener('click', (e) => {
+        e.preventDefault();
+        sendMessage();
+        return false;
+    });
+	chatSocket.onmessage = function(event){
+        const data = JSON.parse(event.data);
+        document.getElementById("chat-room-messages").value += data.message + "\n";
+	}
+
+</script>
