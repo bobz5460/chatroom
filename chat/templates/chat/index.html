@@ -138,12 +138,15 @@
     chatSocket.onerror = function(event){
         const li = document.createElement("li");
         li.className = "list-group-item";
-        li.textContent = event;
+        li.textContent = "An error occurred. Please refresh the page.";
         messages.append(li);
     }
-    //chatSocket.onclose = function(event){
-    //    document.getElementById("chat-room-messages").value += "Websocket disconnected! Please refresh page." + "\n";
-    //}
+    chatSocket.onclose = function(event){
+                const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.textContent = "Websocket disconnected! Please refresh the page.";
+        messages.append(li);
+    }
 
 </script>
 </html>
